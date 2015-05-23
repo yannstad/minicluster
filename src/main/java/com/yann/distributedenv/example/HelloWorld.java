@@ -71,12 +71,6 @@ public class HelloWorld
 
 				} catch (Exception ex) {
 					log.error("opertaor crashed", ex);
-				} finally {
-					try {
-						operator.close();
-					} catch (IOException ex) {
-						log.error("fail to close allreducable operator", ex);
-					}
 				}
 				//======================================================================
 			}

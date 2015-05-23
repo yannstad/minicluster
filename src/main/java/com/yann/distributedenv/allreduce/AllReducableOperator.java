@@ -38,10 +38,21 @@ public class AllReducableOperator implements AllReducable {
 		}
 	}
 
+	@Override
+	protected void finalize() throws Throwable {
+		try {
+			this.disconnect();
+		} catch (Throwable t) {
+			throw t;
+		} finally {
+			super.finalize();
+		}
+	}
+
 	/**
 	 * disconnect from the distributed environment
 	 */
-	public void close() throws IOException {
+	private void disconnect() throws IOException {
 		log.info("disconnecting from the distributed environment");
 		if (_proxy != null) {
 			_proxy.disconnect();
