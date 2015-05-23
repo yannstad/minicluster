@@ -15,7 +15,7 @@ import com.yann.distributedenv.register.RegisterClient;
 
 public class SocketProxy implements Proxy {
 
-	private static Logger LOG = Logger.getLogger(SocketProxy.class);
+	private static Logger log = Logger.getLogger(SocketProxy.class);
 
 	private ServerSocket _listener;
 	private Socket _father;
@@ -53,7 +53,7 @@ public class SocketProxy implements Proxy {
 	 * socket on any free port.
 	 */
 	private void start(Integer port) throws IOException {
-		LOG.info("starting proxy");
+		log.info("starting proxy");
 		_listener = new ServerSocket(port);
 		_isListening = true;
 	}
@@ -82,17 +82,17 @@ public class SocketProxy implements Proxy {
 	public void connect() throws IOException {
 
 		if (_isConnected) {
-			LOG.info("already connected");
+			log.info("already connected");
 			return;
 		}
 
 		if (!_isListening) {
-			LOG.error("cannot connect: proxy is not listening");
+			log.error("cannot connect: proxy is not listening");
 			return;
 		}
 
 		if (_isRegistered) {
-			LOG.info("already connected");
+			log.info("already connected");
 			return;
 		}
 
@@ -100,7 +100,7 @@ public class SocketProxy implements Proxy {
 		_isRegistered = true;
 
 		if (env.getFather() != null) {
-			LOG.info("waiting for incoming connection");
+			log.info("waiting for incoming connection");
 			_father = _listener.accept();//TODO check identity of connected socket
 		}
 
@@ -131,7 +131,7 @@ public class SocketProxy implements Proxy {
 	 */
 	@Override
 	public void disconnect() throws IOException {
-		LOG.info("stopping proxy");
+		log.info("stopping proxy");
 		if (_father != null) {
 			_father.close();
 		}
@@ -159,7 +159,7 @@ public class SocketProxy implements Proxy {
 
 		for (Socket child : _children) {
 			if (child != null) {
-				LOG.info("receiving from child");
+				log.info("receiving from child");
 
 				Message<? extends Reducable> m = new Message(msg.getContent());
 				m.deSerializeContent(child.getInputStream());
@@ -171,7 +171,7 @@ public class SocketProxy implements Proxy {
 	private void sendToFather(Message<?> msg) throws IOException {
 
 		if (_father != null) {
-			LOG.info("sending to father");
+			log.info("sending to father");
 			msg.serializeContent(_father.getOutputStream());
 		}
 	}
@@ -185,7 +185,7 @@ public class SocketProxy implements Proxy {
 	private void receiveFromFather(Message<?> msg) throws ClassNotFoundException, IOException {
 
 		if (_father != null) {
-			LOG.info("receiving from father");
+			log.info("receiving from father");
 			msg.deSerializeContent(_father.getInputStream());
 		}
 	}
@@ -194,7 +194,7 @@ public class SocketProxy implements Proxy {
 
 		for (Socket child : _children) {
 			if (child != null) {
-				LOG.info("sending to child");
+				log.info("sending to child");
 				msg.serializeContent(child.getOutputStream());
 			}
 		}

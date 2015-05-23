@@ -5,7 +5,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
-import org.mortbay.log.Log;
 
 import com.yann.distributedenv.allreduce.AllReducableOperator;
 import com.yann.distributedenv.log.Log4j;
@@ -18,7 +17,7 @@ import com.yann.distributedenv.register.RegisterServer;
  */
 public class HelloWorld
 {
-	private static Logger LOG = Logger.getLogger(HelloWorld.class);
+	private static Logger log = Logger.getLogger(HelloWorld.class);
 
 	public static void main(String[] args) throws IOException,
 	ClassNotFoundException, InterruptedException
@@ -66,17 +65,17 @@ public class HelloWorld
 					operator = new AllReducableOperator(id, hostname, port);
 
 					Sum sum = new Sum(id);
-					Log.info("before all reduce, sum = " + sum.getSum());
+					log.info("before all reduce, sum = " + sum.getSum());
 					sum = operator.allReduce(sum);
-					Log.info("after all reduce, sum = " + sum.getSum());
+					log.info("after all reduce, sum = " + sum.getSum());
 
 				} catch (Exception ex) {
-					LOG.error("opertaor crashed", ex);
+					log.error("opertaor crashed", ex);
 				} finally {
 					try {
 						operator.close();
 					} catch (IOException ex) {
-						LOG.error("fail to close allreducable operator", ex);
+						log.error("fail to close allreducable operator", ex);
 					}
 				}
 				//======================================================================

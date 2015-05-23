@@ -12,7 +12,7 @@ import com.yann.distributedenv.comm.SocketProxy;
 
 public class AllReducableOperator implements AllReducable {
 
-	private static Logger LOG = Logger.getLogger(AllReducableOperator.class);
+	private static Logger log = Logger.getLogger(AllReducableOperator.class);
 
 	private final Proxy _proxy;
 
@@ -32,7 +32,7 @@ public class AllReducableOperator implements AllReducable {
 	 * connect to the distributed environment
 	 */
 	private void connect() throws IOException {
-		LOG.info("connecting to the distributed environment");
+		log.info("connecting to the distributed environment");
 		if (_proxy != null) {
 			_proxy.connect();
 		}
@@ -42,7 +42,7 @@ public class AllReducableOperator implements AllReducable {
 	 * disconnect from the distributed environment
 	 */
 	public void close() throws IOException {
-		LOG.info("disconnecting from the distributed environment");
+		log.info("disconnecting from the distributed environment");
 		if (_proxy != null) {
 			_proxy.disconnect();
 		}

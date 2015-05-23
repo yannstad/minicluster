@@ -19,7 +19,7 @@ import com.yann.distributedenv.context.Node;
 
 public class RegisterServer implements Runnable {
 
-	private static Logger LOG = Logger.getLogger(RegisterServer.class);
+	private static Logger log = Logger.getLogger(RegisterServer.class);
 	public static final Integer PORT = 37460;
 
 	private ServerSocket _listener;
@@ -40,13 +40,13 @@ public class RegisterServer implements Runnable {
 			receiveFromParents();
 			sendToParents();
 		} catch (Exception ex) {
-			LOG.error("server crashed", ex);
+			log.error("server crashed", ex);
 		}
 	}
 
 	private void startListener() throws IOException {
 		_listener = new ServerSocket(PORT);
-		LOG.info("start socket server on "
+		log.info("start socket server on "
 				+ String.format("[%s:%d]", InetAddress.getLocalHost()
 						.getHostName(), _listener.getLocalPort()));
 	}
@@ -60,11 +60,11 @@ public class RegisterServer implements Runnable {
 		}
 		_environmentPerParent = new ArrayList<Environment>();
 		_nodePerId = new HashMap<Integer, Node>();
-		LOG.info("server is up");
+		log.info("server is up");
 	}
 
 	public void close() throws IOException {
-		LOG.info("close server");
+		log.info("close server");
 		if (_parents != null) {
 			for (Socket socket : _parents) {
 				socket.close();
@@ -77,7 +77,7 @@ public class RegisterServer implements Runnable {
 
 	private void receiveFromParents() throws IOException, ClassNotFoundException {
 		for (Socket parent : _parents) {
-			LOG.info("receiving from client...");
+			log.info("receiving from client...");
 
 			Message<Environment> msg = new Message<Environment>();
 			msg.deSerializeContent(parent.getInputStream());
@@ -114,7 +114,7 @@ public class RegisterServer implements Runnable {
 			Environment env = buildEnvAroundMe(_environmentPerParent.get(index++).getMe());
 			Message<Environment> msg = new Message<Environment>(env);
 
-			LOG.info("sending to client...");
+			log.info("sending to client...");
 			msg.serializeContent(parent.getOutputStream());
 		}
 	}

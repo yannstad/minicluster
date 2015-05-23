@@ -11,7 +11,7 @@ import com.yann.distributedenv.context.Environment;
 
 public class RegisterClient implements Runnable {
 
-	private static Logger LOG = Logger.getLogger(RegisterClient.class);
+	private static Logger log = Logger.getLogger(RegisterClient.class);
 
 	private Socket _child;
 	private String _registerServerHostname;
@@ -37,12 +37,12 @@ public class RegisterClient implements Runnable {
 			sendEnvToServer();
 			receiveEnvFromServer();
 		} catch (Exception ex) {
-			LOG.error("client crashed", ex);
+			log.error("client crashed", ex);
 		} finally {
 			try {
 				_child.close();
 			} catch (IOException ex) {
-				LOG.error("socket close failed", ex);
+				log.error("socket close failed", ex);
 			}
 		}
 	}
@@ -52,14 +52,14 @@ public class RegisterClient implements Runnable {
 	}
 
 	private void sendEnvToServer() throws IOException {
-		LOG.info("sending environment to registration server");
+		log.info("sending environment to registration server");
 
 		Message<Environment> msg = new Message<Environment>(_env);
 		msg.serializeContent(_child.getOutputStream());
 	}
 
 	private void receiveEnvFromServer() throws ClassNotFoundException, IOException {
-		LOG.info("receiving environment from registration server");
+		log.info("receiving environment from registration server");
 
 		Message<Environment> msg = new Message<Environment>();
 		msg.deSerializeContent(_child.getInputStream());
