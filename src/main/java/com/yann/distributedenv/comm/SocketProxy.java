@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.yann.distributedenv.context.Environment;
 import com.yann.distributedenv.context.Node;
-import com.yann.distributedenv.register.Client;
+import com.yann.distributedenv.register.RegisterClient;
 
 public class SocketProxy implements Proxy {
 
@@ -22,15 +22,20 @@ public class SocketProxy implements Proxy {
 	private Collection<Socket> _children;
 	private boolean _isListening;
 	private boolean _isRegistered;
+	private String _registerServerHostname;
+	private Integer _registerServerPort;
 	private boolean _isConnected;
 	private Integer _nodeId;
 
-	public SocketProxy(Integer nodeId) throws IOException {
+	public SocketProxy(Integer nodeId, String registerServerHostname,
+			Integer registerServerPort) throws IOException {
 		_listener = null;
 		_father = null;
 		_children = new ArrayList<Socket>();
 		_isListening = false;
 		_isRegistered = false;
+		_registerServerHostname = registerServerHostname;
+		_registerServerPort = registerServerPort;
 		_isConnected = false;
 		_nodeId = nodeId;
 		this.start();
@@ -106,15 +111,17 @@ public class SocketProxy implements Proxy {
 		}
 	}
 
-	private static Environment register(Integer localNodeId, Integer port, String hostname) throws IOException {
+	private Environment register(Integer localNodeId, Integer port,
+			String hostname) throws IOException {
 
 		Node me = new Node(localNodeId, port, hostname);
 		Environment env = new Environment(me, null, null);
 
-		// connect to register server to get address of parents and children
-		Client client = new Client(env);
+		// connect to register server to obtain addresses of parents and
+		// children
+		RegisterClient client = new RegisterClient(env,
+				_registerServerHostname, _registerServerPort);
 		client.run();
-		client.close();
 
 		return client.getEnv();
 	}

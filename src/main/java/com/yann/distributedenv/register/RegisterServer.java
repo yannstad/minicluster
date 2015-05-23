@@ -16,27 +16,10 @@ import org.apache.log4j.Logger;
 import com.yann.distributedenv.comm.Message;
 import com.yann.distributedenv.context.Environment;
 import com.yann.distributedenv.context.Node;
-import com.yann.distributedenv.log.Log4j;
 
-public class Server implements Runnable {
+public class RegisterServer implements Runnable {
 
-	private static Logger LOG = Logger.getLogger(Server.class);
-
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		Log4j.initialize();
-
-		Integer nbClients = Integer.parseInt(args[0]);
-		Server pop = null;
-		try {
-			pop = new Server(nbClients);
-			pop.run();
-		} catch (Exception ex) {
-			LOG.error("failed", ex);
-		} finally {
-			pop.close();
-		}
-	}
-
+	private static Logger LOG = Logger.getLogger(RegisterServer.class);
 	public static final Integer PORT = 37460;
 
 	private ServerSocket _listener;
@@ -45,19 +28,15 @@ public class Server implements Runnable {
 	private Map<Integer, Node> _nodePerId;
 	private Integer _nbClients;
 
-	private void startListener() throws IOException {
-		_listener = new ServerSocket(PORT);
-		LOG.info("start socket server on " + String.format("[%s:%d]", InetAddress.getLocalHost().getHostName(), _listener.getLocalPort()));
-	}
-
-	public Server(Integer nbClients) throws IOException {
+	public RegisterServer(Integer nbClients) throws IOException {
 		_nbClients = nbClients;
+		startListener();
 	}
 
 	@Override
 	public void run() {
 		try {
-			setupServer();
+			acceptRemoteConnections();
 			receiveFromParents();
 			sendToParents();
 		} catch (Exception ex) {
@@ -65,8 +44,14 @@ public class Server implements Runnable {
 		}
 	}
 
-	private void setupServer() throws IOException {
-		startListener();
+	private void startListener() throws IOException {
+		_listener = new ServerSocket(PORT);
+		LOG.info("start socket server on "
+				+ String.format("[%s:%d]", InetAddress.getLocalHost()
+						.getHostName(), _listener.getLocalPort()));
+	}
+
+	private void acceptRemoteConnections() throws IOException {
 		_parents = new ArrayList<Socket>();
 		while (_nbClients > 0) {
 			_parents.add(_listener.accept());
@@ -138,7 +123,7 @@ public class Server implements Runnable {
 		return _listener.getLocalPort();
 	}
 
-	public static String getHostname() throws UnknownHostException {
+	public String getHostname() throws UnknownHostException {
 		return InetAddress.getLocalHost().getHostName();
 	}
 }

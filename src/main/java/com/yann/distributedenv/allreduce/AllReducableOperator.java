@@ -10,28 +10,29 @@ import com.yann.distributedenv.comm.Proxy;
 import com.yann.distributedenv.comm.Reducable;
 import com.yann.distributedenv.comm.SocketProxy;
 
-public class Operator implements AllReducable {
+public class AllReducableOperator implements AllReducable {
 
-	private static Logger LOG = Logger.getLogger(Operator.class);
+	private static Logger LOG = Logger.getLogger(AllReducableOperator.class);
 
 	private final Proxy _proxy;
 
-	public Operator(Proxy proxy) {
+	public AllReducableOperator(Proxy proxy) {
 		if (proxy == null) {
 			throw new IllegalArgumentException("proxy");
 		}
 		_proxy = proxy;
 	}
 
-	public Operator(Integer nodeId) throws IOException {
-		this(new SocketProxy(nodeId));
+	public AllReducableOperator(Integer nodeId, String registerServerHostname, Integer registerServerPort) throws IOException {
+		this(new SocketProxy(nodeId, registerServerHostname, registerServerPort));
+		this.connect();
 	}
 
 	/**
 	 * connect to the distributed environment
 	 */
-	public void connect() throws IOException {
-		LOG.info("connect to the distributed environment");
+	private void connect() throws IOException {
+		LOG.info("connecting to the distributed environment");
 		if (_proxy != null) {
 			_proxy.connect();
 		}
@@ -40,8 +41,8 @@ public class Operator implements AllReducable {
 	/**
 	 * disconnect from the distributed environment
 	 */
-	public void disconnect() throws IOException {
-		LOG.info("disconnect from the distributed environment");
+	public void close() throws IOException {
+		LOG.info("disconnecting from the distributed environment");
 		if (_proxy != null) {
 			_proxy.disconnect();
 		}

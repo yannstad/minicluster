@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 import com.yann.distributedenv.comm.Reducable;
 
-interface AllReducable {
+public interface AllReducable {
 
 	<T extends Reducable & Serializable> T allReduce(T data) throws ClassNotFoundException, IOException;
 }
