@@ -1,6 +1,7 @@
 package com.minicluster.example;
 
 import com.minicluster.cluster.service.MiniCluster;
+import com.minicluster.cluster.service.MiniClusters;
 import com.minicluster.example.reducible.Summable;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -27,7 +28,7 @@ public abstract class MiniReducer<KEY_IN, VALUE_IN, KEY_OUT, VALUE_OUT> extends 
         final Path outputFolder = FileOutputFormat.getOutputPath(context);
 
         //start the minicluster
-        minicluster = MiniCluster.Builder.create(reducerId+1, clusterSize, outputFolder.toString(), fs);
+        minicluster = MiniClusters.newMapReduceCluster(reducerId+1, clusterSize, outputFolder.toString(), fs);
         boolean success = minicluster.start();
         if (!success) {
             System.err.println("cannot start the minicluster. Check errors in logs");

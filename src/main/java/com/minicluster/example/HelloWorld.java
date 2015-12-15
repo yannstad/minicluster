@@ -2,6 +2,7 @@ package com.minicluster.example;
 
 
 import com.minicluster.cluster.service.MiniCluster;
+import com.minicluster.cluster.service.MiniClusters;
 import com.minicluster.example.reducible.Multipliable;
 import com.minicluster.example.reducible.Summable;
 import org.apache.log4j.Logger;
@@ -29,7 +30,7 @@ public class HelloWorld {
 
     void run(Integer id, Integer clusterSize, String sharedDirectory) {
 
-        MiniCluster cluster = MiniCluster.Builder.create(id, clusterSize, sharedDirectory);
+        MiniCluster cluster = MiniClusters.newLocalCluster(id, clusterSize, sharedDirectory);
         boolean success = cluster.start();
         if (!success) {
             log.error("cannot start the mini cluster. Check errors in logs");

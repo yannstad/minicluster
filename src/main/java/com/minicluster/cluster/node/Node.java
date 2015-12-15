@@ -2,7 +2,7 @@ package com.minicluster.cluster.node;
 
 import com.minicluster.cluster.service.Reducible;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Collection;
 
 /**
@@ -53,15 +53,4 @@ public interface Node {
      * get node id
      */
     Integer getId();
-
-
-    /**
-     * Factory
-     */
-    class Builder {
-
-        public static Node create(Integer nodeId) {
-            return new NodeImpl(nodeId);
-        }
-    }
 }

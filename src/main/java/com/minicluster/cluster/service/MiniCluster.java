@@ -1,10 +1,5 @@
 package com.minicluster.cluster.service;
 
-import com.minicluster.cluster.configuration.Configuration;
-import com.minicluster.cluster.node.Node;
-import com.minicluster.cluster.topology.Topology;
-import org.apache.hadoop.fs.FileSystem;
-
 import java.io.Serializable;
 
 /**
@@ -37,44 +32,4 @@ public interface MiniCluster {
     boolean stop();
 
 
-    /**
-     * Factory
-     */
-    class Builder {
-
-        /**
-         * create a new service instance
-         *
-         * @param id a unique id per service, where id belongs to [1, clusterSize]
-         * @param clusterSize the total number of nodes of the cluster
-         * @param sharedDirectory a directory on the local file system, shared by all nodes
-         * @return a new service instance
-         */
-        static public MiniCluster create(Integer id, Integer clusterSize, String sharedDirectory) {
-
-            Node node = Node.Builder.create(id);
-            Topology topology = Topology.Builder.createBinaryTree(id, clusterSize);
-            Configuration configuration = Configuration.Builder.create(sharedDirectory);
-
-            return new MiniClusterImpl(node, topology, configuration);
-        }
-
-        /**
-         * create a new service instance, dedicated to hadoop map-reduce containers
-         *
-         * @param id a unique id per service, where id belongs to [1, clusterSize]
-         * @param clusterSize the total number of nodes of the cluster
-         * @param hdfsDirectory a directory on the Hdfs, shared by all nodes
-         * @param fs a hadoop file system
-         * @return a new service instance
-         */
-        static public MiniCluster create(Integer id, Integer clusterSize, String hdfsDirectory, FileSystem fs) {
-
-            Node node = Node.Builder.create(id);
-            Topology topology = Topology.Builder.createBinaryTree(id, clusterSize);
-            Configuration configuration = Configuration.Builder.create(hdfsDirectory, fs);
-
-            return new MiniClusterImpl(node, topology, configuration);
-        }
-    }
 }

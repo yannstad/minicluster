@@ -2,13 +2,12 @@ package com.minicluster.cluster.configuration;
 
 import com.google.common.collect.Lists;
 import com.minicluster.cluster.node.Endpoint;
-import org.apache.hadoop.fs.FileSystem;
 
 import java.io.IOException;
 import java.util.Collection;
 
 /**
- * The configuration is global, like a central service reachable from all nodes
+ * The configuration is like Hadoop configuration; global, like a central service reachable from all nodes
  */
 public abstract class Configuration {
 
@@ -39,17 +38,4 @@ public abstract class Configuration {
     }
 
 
-    /**
-     * Factory
-     */
-    static public class Builder {
-        static public Configuration create(String directory, FileSystem fs) {
-            return new HdfsBased(directory, fs);
-        }
-
-        static public Configuration create(String directory) {
-            return new LocalFsBased(directory);
-
-        }
-    }
 }

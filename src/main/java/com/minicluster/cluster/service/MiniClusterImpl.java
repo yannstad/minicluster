@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
 
+/**
+ *
+ */
 class MiniClusterImpl implements MiniCluster {
 
     private final static Logger log = Logger.getLogger(MiniClusterImpl.class);

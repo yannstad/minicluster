@@ -3,7 +3,7 @@ package com.minicluster.cluster.node;
 import java.io.*;
 
 /**
- * An endpoint is also called a socket address. Basically it is the pair hostname:port
+ * An endpoint is a socket address. Basically it is the pair hostname:port
  */
 public class Endpoint implements Serializable {
 

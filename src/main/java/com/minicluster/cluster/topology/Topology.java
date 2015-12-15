@@ -19,21 +19,4 @@ public interface Topology {
     Collection<Integer> getChildIds();
 
 
-    /**
-     * Factory
-     */
-    class Builder {
-
-        public static Topology createBinaryTree(Integer nodeId, Integer size) {
-            return new BinaryTree(nodeId, size);
-        }
-
-        public Topology createFlatTree(Integer nodeId, Integer size) {
-            return new FlatTree(nodeId, size);
-        }
-
-        public Topology createRing(Integer nodeId, Integer size) {
-            return new Ring(nodeId, size);
-        }
-    }
 }

@@ -10,16 +10,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Collection;
 
-class NodeImpl implements Node {
+class NodeTcp implements Node {
 
-    private static Logger log = Logger.getLogger(NodeImpl.class);
+    private static Logger log = Logger.getLogger(NodeTcp.class);
 
     private ServerSocket listener;
     private Socket father;
     private Collection<Socket> children;
     private Integer nodeId;
 
-    public NodeImpl(Integer NodeId) {
+    public NodeTcp(Integer NodeId) {
         listener = null;
         father = null;
         children = Lists.newArrayList();
