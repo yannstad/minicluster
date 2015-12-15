@@ -1,0 +1,9 @@
+# start HelloWorld
+java -Djava.net.preferIPv6Stack=true -Dlog4j.configuration=file://$HOME/Dev/perso/minicluster/src/main/resources/log4j.properties -cp target/com-minicluster-1.0-SNAPSHOT-jar-with-dependencies.jar com.minicluster.example.HelloWorld
+
+# start the demo
+java -Djava.net.preferIPv6Stack=true -Dlog4j.configuration=file://$HOME/Dev/perso/minicluster/src/main/resources/log4j.properties -cp target/com-minicluster-1.0-SNAPSHOT-jar-with-dependencies.jar com.minicluster.example.Demo
+
+# build and deploy hadoop job
+mvn clean install && scp target/com-minicluster-1.0-SNAPSHOT-jar-with-dependencies.jar y.stadnicki@jobs-user.hpc.criteo.prod:~/
+
